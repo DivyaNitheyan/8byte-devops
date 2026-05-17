@@ -1,36 +1,45 @@
 variable "aws_region" {
-  default = "us-east-1"
+  description = "AWS region for infrastructure deployment"
+  default     = "us-east-1"
 }
 
 variable "project_name" {
-  default = "devops"
+  description = "Project name used for resource tagging"
+  default     = "devops-demo"
 }
 
 variable "vpc_cidr" {
-  default = "10.0.0.0/16"
+  description = "CIDR block for main VPC"
+  default     = "10.0.0.0/16"
 }
 
 variable "public_subnet_cidrs" {
-  default = ["10.0.1.0/24", "10.0.2.0/24"]
+  description = "CIDR blocks for public subnets"
+  default     = ["10.0.1.0/24", "10.0.2.0/24"]
 }
 
 variable "private_subnet_cidrs" {
-  default = ["10.0.3.0/24", "10.0.4.0/24"]
+  description = "CIDR blocks for private subnets"
+  default     = ["10.0.3.0/24", "10.0.4.0/24"]
 }
 
 variable "instance_type" {
-  default = "t3.micro"
+  description = "EC2 instance type"
+  default     = "t3.micro"
 }
 
 variable "db_name" {
-  default = "devopsdb"
+  description = "RDS database name"
+  default     = "appdb"
 }
 
 variable "db_username" {
-  default = "dbuser"
+  description = "Database username"
+  default     = "adminuser"
 }
 
 variable "db_password" {
-  sensitive = true
-  default   = "Admin12345"
+  description = "Database password"
+  sensitive   = true
+  default     = "admin12345"
 }

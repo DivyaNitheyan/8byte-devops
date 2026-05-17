@@ -1,15 +1,19 @@
-output "alb_dns_name" {
-  value = aws_lb.lb.dns_name
+output "load_balancer_dns" {
+  description = "Public DNS name of the application load balancer"
+  value       = aws_lb.frontend_alb.dns_name
 }
 
-output "ec2_instance_id" {
-  value = aws_instance.devops.id
+output "application_server_id" {
+  description = "EC2 instance ID"
+  value       = aws_instance.app_server.id
 }
 
-output "rds_endpoint" {
-  value = aws_db_instance.rds.endpoint
+output "database_endpoint" {
+  description = "RDS PostgreSQL endpoint"
+  value       = aws_db_instance.postgres_db.endpoint
 }
 
 output "vpc_id" {
-  value = aws_vpc.vpc.id
+  description = "Main VPC ID"
+  value       = aws_vpc.main_vpc.id
 }
