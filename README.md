@@ -70,7 +70,7 @@ docker compose up -d
 ```
 
 ### Dashboards
-- Dashboard 1 — Node Exporter Full (ID: 1860) — CPU, memory, disk metrics
+- Dashboard 1 — Node Exporter — CPU, memory, disk metrics
 - Dashboard 2 — Logs Dashboard
 
 ### Accessing monitoring
