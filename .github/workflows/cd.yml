@@ -1,6 +1,12 @@
 name: CD Production Pipeline
 
 on:
+  workflow_run:
+    workflows: ["CI Pipeline"]
+    types:
+      - completed
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
