@@ -181,9 +181,9 @@ resource "aws_security_group" "db_sg" {
 resource "aws_instance" "app_server" {
   ami                         = "ami-091138d0f0d41ff90"
   instance_type               = var.instance_type
-  subnet_id                   = aws_subnet.private_subnet_1.id
+  subnet_id                   = aws_subnet.public_subnet_1.id
   vpc_security_group_ids      = [aws_security_group.app_sg.id]
-  associate_public_ip_address = false
+  associate_public_ip_address = true
   key_name                    = "practice"
   user_data = <<-EOF
               #!/bin/bash
