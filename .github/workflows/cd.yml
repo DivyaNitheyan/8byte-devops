@@ -1,0 +1,56 @@
+name: CD Production Pipeline
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy-staging:
+    runs-on: ubuntu-latest
+    environment: staging
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Deploy to Staging via SSM
+        run: |
+          aws ssm send-command \
+            --instance-ids ${{ secrets.EC2_INSTANCE_ID }} \
+            --document-name "AWS-RunShellScript" \
+            --parameters commands=["docker pull ${{ secrets.DOCKER_USERNAME }}/8byte-devops:latest","docker stop app || true","docker rm app || true","docker run -d --name app -p 80:80 ${{ secrets.DOCKER_USERNAME }}/8byte-devops:latest"] \
+            --region us-east-1
+
+  deploy-production:
+    runs-on: ubuntu-latest
+    environment: production
+    needs: deploy-staging
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Deploy to Production via SSM
+        run: |
+          aws ssm send-command \
+            --instance-ids ${{ secrets.EC2_INSTANCE_ID }} \
+            --document-name "AWS-RunShellScript" \
+            --parameters commands=["docker pull ${{ secrets.DOCKER_USERNAME }}/8byte-devops:latest","docker stop app || true","docker rm app || true","docker run -d --name app -p 80:80 ${{ secrets.DOCKER_USERNAME }}/8byte-devops:latest"] \
+            --region us-east-1
+
+      - name: Notify on failure
+        if: failure()
+        run: echo "CD Production pipeline failed! Check GitHub Actions for details."
