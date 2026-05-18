@@ -138,7 +138,12 @@ resource "aws_security_group" "app_sg" {
     protocol        = "tcp"
     security_groups = [aws_security_group.alb_sg.id]
   }
-
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
   egress {
     from_port   = 0
     to_port     = 0
@@ -185,16 +190,13 @@ resource "aws_instance" "app_server" {
   vpc_security_group_ids      = [aws_security_group.app_sg.id]
   associate_public_ip_address = true
   key_name                    = "practice"
-  user_data = <<-EOF
+  user_data                   = <<-EOF
               #!/bin/bash
-              yum update -y
-              yum install -y docker
+              apt-get update -y
+              apt-get install -y docker.io
               systemctl start docker
               systemctl enable docker
-              usermod -a -G docker ec2-user
-              yum install -y amazon-ssm-agent
-              systemctl start amazon-ssm-agent
-              systemctl enable amazon-ssm-agent
+              usermod -a -G docker ubuntu
               EOF
   tags = {
     Name = "${var.project_name}-app-server"

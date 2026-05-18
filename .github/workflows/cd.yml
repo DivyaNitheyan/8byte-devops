@@ -29,7 +29,7 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
-          username: ec2-user
+          username: ubuntu
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script: |
             docker pull ${{ secrets.DOCKER_USERNAME }}/8byte-devops:latest
@@ -61,7 +61,7 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
-          username: ec2-user
+          username: ubuntu
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script: |
             docker pull ${{ secrets.DOCKER_USERNAME }}/8byte-devops:latest
