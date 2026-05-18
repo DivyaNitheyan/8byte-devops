@@ -4,9 +4,7 @@ on:
   pull_request:
     branches:
       - main
-    paths:
-      - 'app/**'
-      
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -31,9 +29,6 @@ jobs:
           format: table
           exit-code: 0
 
-      - name: Push Docker image
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/8byte-devops:latest
-
       - name: Notify on failure
         if: failure()
-        run: echo "Pipeline failed! Check GitHub Actions for details."
+        run: echo "CI pipeline failed! Check GitHub Actions for details."
