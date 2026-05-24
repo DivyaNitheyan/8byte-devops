@@ -316,21 +316,21 @@ resource "aws_lb_target_group_attachment" "app_attachment" {
 }
 
 # # S3 bucket for Terraform state storage
-# resource "aws_s3_bucket" "terraform_state_bucket" {
-#   bucket = "8byte-devops-terraform-state"
-#   lifecycle {
-#     prevent_destroy = true
-#   }
-#   tags = {
-#     Name = "${var.project_name}-terraform-state"
-#   }
-# }
+resource "aws_s3_bucket" "terraform_state_bucket" {
+  bucket = "8byte-devops-terraform-state"
+  lifecycle {
+    prevent_destroy = true
+  }
+  tags = {
+    Name = "${var.project_name}-terraform-state"
+  }
+}
 
 # # Enable versioning for Terraform state bucket
-# resource "aws_s3_bucket_versioning" "terraform_state_versioning" {
-#   bucket = aws_s3_bucket.terraform_state_bucket.id
+resource "aws_s3_bucket_versioning" "terraform_state_versioning" {
+  bucket = aws_s3_bucket.terraform_state_bucket.id
 
-#   versioning_configuration {
-#     status = "Enabled"
-#   }
-# }
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
