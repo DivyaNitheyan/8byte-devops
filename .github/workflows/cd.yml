@@ -1,10 +1,7 @@
 name: CD Production Pipeline
 
 on:
-  workflow_run:
-    workflows: ["CI Pipeline"]
-    types:
-      - completed
+  push:
     branches:
       - main
   workflow_dispatch:
@@ -26,7 +23,8 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/8byte-devops:latest ./app
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/8byte-devops:${{ github.sha }} -t ${{ secrets.DOCKER_USERNAME }}/8byte-devops:latest ./app
+          docker push ${{ secrets.DOCKER_USERNAME }}/8byte-devops:${{ github.sha }}
           docker push ${{ secrets.DOCKER_USERNAME }}/8byte-devops:latest
 
       - name: Configure AWS credentials
