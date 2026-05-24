@@ -17,3 +17,7 @@ output "vpc_id" {
   description = "Main VPC ID"
   value       = aws_vpc.main_vpc.id
 }
+output "ec2_public_ip" {
+  description = "EC2 instance public IP"
+  value       = aws_instance.app_server.public_ip
+}
