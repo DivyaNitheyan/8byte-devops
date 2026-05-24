@@ -1,7 +1,9 @@
 name: CD Production Pipeline
 
 on:
-  push:
+  pull_request:
+    types:
+      - closed
     branches:
       - main
   workflow_dispatch:
@@ -10,7 +12,7 @@ jobs:
   deploy-staging:
     runs-on: ubuntu-latest
     environment: staging
-
+    if: github.event.pull_request.merged == true
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
