@@ -321,12 +321,12 @@ resource "aws_lb_target_group_attachment" "app_attachment" {
   port             = 80
 }
 
-# # S3 bucket for Terraform state storage
+# S3 bucket for Terraform state storage
 resource "aws_s3_bucket" "terraform_state_bucket" {
   bucket = "8byte-devops-terraform-state"
-  lifecycle {
-    prevent_destroy = true
-  }
+  # lifecycle {
+  #   prevent_destroy = true
+  # }
   tags = {
     Name = "${var.project_name}-terraform-state"
   }
